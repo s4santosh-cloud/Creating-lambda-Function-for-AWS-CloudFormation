@@ -1,0 +1,24 @@
+import boto3
+
+def lambda_handler(event, context):
+    # CloudFormation Stack Name
+    stack_name = 'stack-cloudformation-template'  # Replace with the desired name for your CloudFormation stack
+
+    # S3 Bucket where the CloudFormation template is stored
+    template_bucket = 'epial'  # Replace with the name of your S3 bucket
+
+    # Key of the CloudFormation template file in the S3 bucket
+    template_key = 'new-template.txt'  # Replace with the name of your CloudFormation template file
+
+    # Create CloudFormation Client
+    cloudformation_client = boto3.client('cloudformation')
+
+    # Create the CloudFormation Stack
+    response = cloudformation_client.create_stack(
+        StackName=stack_name,
+        TemplateURL=f'https://{template_bucket}.s3.amazonaws.com/{template_key}',
+        Capabilities=['CAPABILITY_NAMED_IAM']
+    )
+	
+    return response
+   
